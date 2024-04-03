@@ -60,12 +60,13 @@ Create a Copilot application by running:
 in the **project root folder** and following the instructions.
 
 > Note: The name of the _application_ should be `tms`.
+> > _You can see the progress and result in AWS Console > Cloudformation > Stacks_
 
 Next, create and deploy a **test** environment for our application:
 
     copilot env init --name test
 
-> Select your _default_ AWS profile when prompted.
+> Select your _default_ AWS profile and _Default environment configuration_ when prompted.
 
     copilot env deploy --name test
 
@@ -81,7 +82,13 @@ Finally, run:
 
     copilot svc deploy --name api
 
-Test the API running on AWS by invoking the Load Balanced Web Service URL and the aforementioned API endpoints.
+Test the API running on AWS by invoking the Load Balanced Web Service URL and the aforementioned API endpoints  (replace `AWS_LB_URL` with your Load Balanced Web Service URL).
+
+    curl http://<AWS_LB_URL>/healthz
+
+    curl -X POST http://<AWS_LB_URL>/content
+    
+> Tip: To get info about a service, such as the Load Balanced Web Service URL, run `copilot svc show`.
 
 ## Exercise 2: Service-to-Service Communication
 In this exercise, an AWS Copilot [Backend Service](https://aws.github.io/copilot-cli/docs/concepts/services/#backend-service) for the _TMS Validator_ service is created and deployed.
@@ -108,7 +115,7 @@ You can use [Docker Compose](https://docs.docker.com/compose/) to locally test t
             build: ../api/
             ports:
                 - "80:80"
-        content:
+        validator:
             build: ../validator
     ```
 
@@ -138,11 +145,13 @@ To create and deploy the _TMS Validator_ service, in the **project root** folder
 
         copilot svc deploy --name validator
 
+*   Redeploy the _TMS API_ service:
+
+        copilot svc deploy --name api
+
 *   Invoke your updated API server (replace `AWS_LB_URL` with your Load Balanced Web Service URL):
 
         curl -X POST http://<AWS_LB_URL>/content
-
-    > Tip: To get info about a service, such as the Load Balanced Web Service URL, run `copilot svc show`.
 
 *   Check the logs of the _TMS Validator_ service to see that it's handled a request from _TMS API_:
 

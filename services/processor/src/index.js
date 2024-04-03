@@ -6,8 +6,6 @@ const delay = delayMs => {
   });
 };
 
-// ...
-
 let running = true;
 
 // ...
