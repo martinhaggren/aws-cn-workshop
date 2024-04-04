@@ -32,7 +32,8 @@ process.on('SIGTERM', () => {
 
         // other connections and resources to clean up...
 
-        process.exit(0);
+       
     });
+    process.exit(0);
    
 });

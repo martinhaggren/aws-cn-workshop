@@ -2,6 +2,11 @@ const express   = require('express');
 const env       = require('./env');
 const routes    = require('./routes');
 
+const {
+    SNSClient,
+    PublishCommand
+} = require('@aws-sdk/client-sns');
+
 const app = express();
 app.use(express.json());
 app.use('/', routes);

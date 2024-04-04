@@ -166,6 +166,18 @@ You can enable and observe this as follows:
 
 *   In the `services/validator` folder, use the `fault` Express middleware defined in `src/middleware.js` in the Express application created in `src/index.js`.
 
+*   Implement the healthcheck endpoint `/healthz` the same way as you did for the `api service`, but also take the injected fault into consideration, as below: 
+
+            app.get('/healthz', (req, res) => {
+                if (injectFault.flag) {
+                    return res.status(503).send('Unhealthy due to fault injection');
+                }
+                res.status(200).send('OK');
+            });
+
+
+* In 
+
     The `fault` middleware intercepts call to an `/503` endpoint and injects 503 responses for 3 minutes. 
 
 *   In the `services/api` folder, add a route `/injectfault` in `src/routes.js` that invokes the _TMS Validator_ service's `/503` endpoint:
